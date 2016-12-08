@@ -462,8 +462,23 @@ static NSString* toBase64(NSData* data) {
                 }];
                 return;
             } else {
-                NSString* nativeUri = [[self urlTransformer:url] absoluteString];
-                result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:nativeUri];
+                //Cordova implementation returns a path to the image in the photo library
+                //NSString* nativeUri = [[self urlTransformer:url] absoluteString];
+                //result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:nativeUri];
+                
+                //zenput will rotate the image to it's correct orientation, save it to a temporary folder and return the path
+                image = [self retrieveImage:info options:options];
+                NSData* data = [self processImage:image info:info options:options];
+                NSString* extension = options.encodingType == EncodingTypePNG? @"png" : @"jpg";
+                NSString* filePath = [self tempFilePath:extension];
+                NSError* err = nil;
+                
+                // save file
+                if (![data writeToFile:filePath options:NSAtomicWrite error:&err]) {
+                    result = [CDVPluginResult resultWithStatus:CDVCommandStatus_IO_EXCEPTION messageAsString:[err localizedDescription]];
+                } else {
+                    result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:[[self urlTransformer:[NSURL fileURLWithPath:filePath]] absoluteString]];
+                }
             }
         }
             break;
