@@ -541,7 +541,7 @@ static NSString* toBase64(NSData* data) {
      if (isWriteSuccess) {
          return [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:newfilePath];
      } else {
-         return  [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"Error Selcing Video"];
+         return  [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"Error selecting Video"];
      }
 }
 
