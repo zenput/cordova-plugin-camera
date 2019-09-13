@@ -525,8 +525,24 @@ static NSString* toBase64(NSData* data) {
 
 - (CDVPluginResult*)resultForVideo:(NSDictionary*)info
 {
-    NSString* moviePath = [[info objectForKey:UIImagePickerControllerMediaURL] absoluteString];
-    return [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:moviePath];
+    NSURL *url = [info objectForKey:UIImagePickerControllerMediaURL];
+
+    NSData *urlData = [NSData dataWithContentsOfURL:url];
+    NSArray   *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString  *documentsDirectory = [paths objectAtIndex:0];
+    NSString  *newfilePath = [NSString stringWithFormat:@"%@/%@", documentsDirectory, [url lastPathComponent]];
+
+     BOOL fileExists = [[NSFileManager defaultManager] fileExistsAtPath:newfilePath];
+     if (fileExists){
+         return [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:newfilePath];
+     }
+
+     BOOL isWriteSuccess = [urlData writeToFile:newfilePath atomically:YES];
+     if (isWriteSuccess) {
+         return [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:newfilePath];
+     } else {
+         return  [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"Error Selcing Video"];
+     }
 }
 
 - (void)imagePickerController:(UIImagePickerController*)picker didFinishPickingMediaWithInfo:(NSDictionary*)info
