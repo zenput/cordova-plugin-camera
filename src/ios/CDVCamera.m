@@ -528,21 +528,21 @@ static NSString* toBase64(NSData* data) {
     NSURL *url = [info objectForKey:UIImagePickerControllerMediaURL];
 
     NSData *urlData = [NSData dataWithContentsOfURL:url];
-    NSArray   *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString  *documentsDirectory = [paths objectAtIndex:0];
-    NSString  *newfilePath = [NSString stringWithFormat:@"%@/%@", documentsDirectory, [url lastPathComponent]];
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *newfilePath = [NSString stringWithFormat:@"%@/%@", documentsDirectory, [url lastPathComponent]];
 
-     BOOL fileExists = [[NSFileManager defaultManager] fileExistsAtPath:newfilePath];
-     if (fileExists){
-         return [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:newfilePath];
-     }
+    BOOL fileExists = [[NSFileManager defaultManager] fileExistsAtPath:newfilePath];
+    if (fileExists) {
+        return [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:newfilePath];
+    }
 
-     BOOL isWriteSuccess = [urlData writeToFile:newfilePath atomically:YES];
-     if (isWriteSuccess) {
-         return [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:newfilePath];
-     } else {
-         return  [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"Error selecting Video"];
-     }
+    BOOL isWriteSuccess = [urlData writeToFile:newfilePath atomically:YES];
+    if (isWriteSuccess) {
+        return [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:newfilePath];
+    } else {
+        return  [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"Error selecting Video"];
+    }
 }
 
 - (void)imagePickerController:(UIImagePickerController*)picker didFinishPickingMediaWithInfo:(NSDictionary*)info
