@@ -719,7 +719,7 @@ public class CameraLauncher extends CordovaPlugin implements MediaScannerConnect
             // If you ask for video or the selected file cannot be processed
             // there will be no attempt to resize any returned data.
             if (this.mediaType == VIDEO  || !isImageMimeTypeProcessable(mimeTypeOfGalleryFile)) {
-                this.callbackContext.success(finalLocation);
+                this.callbackContext.success(uriString);
             } else {
 
                 // This is a special case to just return the path as no scaling,
