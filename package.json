@@ -1,6 +1,6 @@
 {
   "name": "@zenput/cordova-plugin-camera",
-  "version": "7.0.1-dev-zp2",
+  "version": "7.0.1-dev-zp3",
   "description": "Cordova Camera Plugin",
   "types": "./types/index.d.ts",
   "cordova": {
